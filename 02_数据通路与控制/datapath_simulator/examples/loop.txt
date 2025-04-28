@@ -1,0 +1,45 @@
+# 循环计算程序 - 计算1到10的和
+# 格式: 十六进制指令
+
+# MIPS指令格式:
+# R型: opcode(6) | rs(5) | rt(5) | rd(5) | shamt(5) | funct(6)
+# I型: opcode(6) | rs(5) | rt(5) | immediate(16)
+# J型: opcode(6) | address(26)
+
+# 初始化计数器 $1 = 1 (addi $1, $0, 1)
+# opcode=0x08 (addi), rs=0 ($0), rt=1 ($1), immediate=1
+0x20010001
+
+# 初始化上限 $2 = 10 (addi $2, $0, 10)
+# opcode=0x08 (addi), rs=0 ($0), rt=2 ($2), immediate=10
+0x2002000A
+
+# 初始化累加器 $3 = 0 (add $3, $0, $0)
+# opcode=0x00 (R型), rs=0 ($0), rt=0 ($0), rd=3 ($3), shamt=0, funct=0x20 (add)
+0x00001820
+
+# 循环开始 (地址: 12)
+# 将当前计数器值加到累加器 (add $3, $3, $1)
+# opcode=0x00 (R型), rs=3 ($3), rt=1 ($1), rd=3 ($3), shamt=0, funct=0x20 (add)
+0x00611820
+
+# 计数器加1 (addi $1, $1, 1)
+# opcode=0x08 (addi), rs=1 ($1), rt=1 ($1), immediate=1
+0x20210001
+
+# 比较计数器和上限 (slt $4, $2, $1)
+# opcode=0x00 (R型), rs=2 ($2), rt=1 ($1), rd=4 ($4), shamt=0, funct=0x2A (slt)
+# 如果 $2 < $1，则 $4 = 1，否则 $4 = 0
+0x0041202A
+
+# 如果 $4 == 0，跳转到循环开始 (beq $4, $0, -4)
+# opcode=0x04 (beq), rs=4 ($4), rt=0 ($0), immediate=-4 (相对地址，向后跳4条指令)
+0x1080FFFC
+
+# 将结果存储到内存 (sw $3, 100($0))
+# opcode=0x2B (sw), rs=0 ($0), rt=3 ($3), immediate=100
+0xAC030064
+
+# 停止执行 (自定义HALT指令)
+# opcode=0x3F (halt)
+0xFC000000 

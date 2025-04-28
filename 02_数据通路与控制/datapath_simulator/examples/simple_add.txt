@@ -1,0 +1,27 @@
+# 简单加法程序
+# 格式: 十六进制指令
+
+# MIPS指令格式:
+# R型: opcode(6) | rs(5) | rt(5) | rd(5) | shamt(5) | funct(6)
+# I型: opcode(6) | rs(5) | rt(5) | immediate(16)
+# J型: opcode(6) | address(26)
+
+# 加载立即数到寄存器 $1 = 10 (addi $1, $0, 10)
+# opcode=0x08 (addi), rs=0 ($0), rt=1 ($1), immediate=10
+0x20010010
+
+# 加载立即数到寄存器 $2 = 20 (addi $2, $0, 20)
+# opcode=0x08 (addi), rs=0 ($0), rt=2 ($2), immediate=20
+0x20020014
+
+# 将寄存器 $1 和 $2 相加，结果存入 $3 (add $3, $1, $2)
+# opcode=0x00 (R型), rs=1 ($1), rt=2 ($2), rd=3 ($3), shamt=0, funct=0x20 (add)
+0x00221820
+
+# 将寄存器 $3 的值存入内存地址 100 (sw $3, 100($0))
+# opcode=0x2B (sw), rs=0 ($0), rt=3 ($3), immediate=100
+0xAC030064
+
+# 停止执行 (自定义HALT指令)
+# opcode=0x3F (halt)
+0xFC000000 
